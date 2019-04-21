@@ -1,0 +1,8 @@
+version: '2'
+services: 
+  pyml:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    image: pyml
+    container_name: run
