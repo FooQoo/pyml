@@ -29,12 +29,22 @@ def train(X_train, y_train, X_test, y_test, model):
 
 
 def main():
-    vectorizer = TfidfVectorizer(min_df=2)
+    vectorizer = TfidfVectorizer(stop_words="english", min_df=10, ngram_range=(1,2))
     X_train, y_train, vectorizer = getData("./train.csv", vectorizer, True)
     X_test, y_test, vectorizer = getData("./test.csv", vectorizer, False)
 
+    print("num of vocab : {}".format(len(vectorizer.vocabulary_)))
+
     train(X_train, y_train, X_test, y_test, MultinomialNB())
-    train(X_train, y_train, X_test, y_test, SGDClassifier(random_state=0, n_jobs=-1 ,class_weight="balanced", max_iter=1000))
+    train(X_train, y_train, X_test, y_test, SGDClassifier(
+        loss="hinge",
+        penalty="l2",
+        random_state=0,
+        n_jobs=-1,
+        class_weight="balanced",
+        learning_rate="optimal",
+        max_iter=1000)
+    )
    
 if __name__ == "__main__":
     main()
